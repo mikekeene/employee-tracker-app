@@ -31,7 +31,7 @@ const menuChoicer = () => {
             'update employee role',
             'view departments',
             'add department',
-            'exit'
+            'view all tables'
         ],}
     ])
     .then(menu => {
@@ -56,7 +56,7 @@ const menuChoicer = () => {
         if (menu.choice === 'add department') {
             addDepartment();
         };
-        if (menu.choice === 'exit') {
+        if (menu.choice === 'view all tables') {
             viewTables();
         };
 
@@ -256,5 +256,20 @@ const addDepartment = () => {
 };
 
 const viewTables = () => {
-
+    console.log('Now viewing all database tables: ');
+    const employeeTable = `SELECT * FROM employee`;
+    db.query(employeeTable, (err, res) => {
+        console.table(res);
+        if (err) throw err;
+    });
+    const roleTable = `SELECT * FROM role`;
+    db.query(roleTable, (err, res) => {
+        console.table(res);
+        if (err) throw err;
+    }); 
+    const departmentTable = `SELECT * FROM department`;
+    db.query(departmentTable, (err, res) => {
+        console.table(res);
+        if (err) throw err;
+    }); 
 };
