@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/mikekeene/employee-tracker-app/issues"
   },
-  "homepage": "https://github.com/mikekeene/employee-tracker-app#readme"
+  "homepage": "https://github.com/mikekeene/employee-tracker-app#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0"
+  }
 }
