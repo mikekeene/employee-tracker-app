@@ -67,7 +67,20 @@ const menuChoicer = () => {
 };
 
 const viewEmployees = () => {
-
+    const sql =  
+    `   SELECT employee.id, first_name, last_name, title, dept_name, manager_id, salary
+        FROM employee
+        INNER JOIN role
+        ON role.id = employee.id
+        INNER JOIN department
+        ON department.id = employee.id;
+    `; 
+    db.query(sql, (err, data) => {
+        if (err) throw err;
+        console.table(data);
+        console.log('Now viewing employees');
+        menuChoicer();
+    });
 };
 
 const addEmployee = () => {
