@@ -123,7 +123,14 @@ const addEmployee = () => {
 
 
 const viewRoles = () => {
-
+    const sql = `SELECT * FROM role`;
+    db.query(sql, (err, res) => {
+        console.log('Now viewing roles');
+        console.table(res);
+        console.log('returning to menu choices...');
+        if (err) throw err;
+        menuChoicer();
+    });
 };
 
 const addRole = () => {
@@ -135,7 +142,14 @@ const updateEmployeeRole = () => {
 };
 
 const viewDepartments = () => {
-
+    const sql = `SELECT * FROM department`;
+    db.query(sql, (err, res) => {
+        console.log('Now viewing departments');
+        console.table(res);
+        console.log('returning to menu choices...');
+        if (err) throw err;
+        menuChoicer();
+    });
 };
 
 const addDepartment = () => {
