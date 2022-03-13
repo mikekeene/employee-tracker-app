@@ -134,7 +134,7 @@ const viewRoles = () => {
 };
 
 const addRole = () => {
-
+    
 };
 
 const updateEmployeeRole = () => {
@@ -153,7 +153,30 @@ const viewDepartments = () => {
 };
 
 const addDepartment = () => {
-
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'add',
+            message: 'What is the name of the new department?'
+        }
+    ])
+    .then(menu => {
+        const sql = `INSERT INTO department (department_name) VALUES (?)`;
+        db.query(sql, menu.add, (err, res) => {
+            if (err) throw err;
+            console.log(`Added new employee: ${menu.add}`);
+            viewNewDepartment();
+        });
+        const viewNewDepartment = () => {
+            const sql = `SELECT * FROM employee`;
+            db.query(sql, (err, res) => {
+                console.log('Now viewing added department');
+                console.table(res);
+                console.log('returning to menu choices...');
+                menuChoicer(); 
+            });
+        };
+    });
 };
 
 const viewTables = () => {
