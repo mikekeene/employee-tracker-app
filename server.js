@@ -48,7 +48,7 @@ const menuChoicer = () => {
             addRole();
         };
         if (answers.menu === 'update employee role') {
-            updateEmployee();
+            updateEmployeeRole();
         };
         if (answers.menu === 'view departments') {
             viewDepartments();
@@ -57,11 +57,43 @@ const menuChoicer = () => {
             addDepartment();
         };
         if (answers.menu === 'exit') {
-            viewExit();
+            viewTables();
         };
 
     })
     .catch((err) => {
         if (err) throw err;
     });
+};
+
+const viewEmployees = () => {
+
+};
+
+const addEmployee = () => {
+
+};
+
+const viewRoles = () => {
+
+};
+
+const addRole = () => {
+
+};
+
+const updateEmployeeRole = () => {
+
+};
+
+const viewDepartments = () => {
+
+};
+
+const addDepartment = () => {
+
+};
+
+const viewTables = () => {
+
 };
