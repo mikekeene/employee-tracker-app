@@ -68,18 +68,12 @@ const menuChoicer = () => {
 
 const viewEmployees = () => {
     const sql =  
-    `   SELECT employee.id, first_name, last_name, title, department_name, manager_id, salary
-        FROM employee
-        INNER JOIN role
-        ON role.id = employee.id
-        INNER JOIN department
-        ON department.id = employee.id;
-    `; 
+    `SELECT * FROM employee`; 
     db.query(sql, (err, res) => {
-        if (err) throw err;
         console.log('Now viewing employees');
         console.table(res);
         console.log('returning to menu choices...');
+        if (err) throw err;
         menuChoicer();
     });
 };
