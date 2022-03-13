@@ -2,14 +2,14 @@
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
-const dotenv = require('dotenv');
+require('dotenv').config();
 
 //db & mysql connection
 const db = mysql.createConnection({
     host: 'localhost',
     database: 'peopledb',
     user: 'root',
-    password: MYSQL_PASS.env
+    password: process.env.MYSQL_PASS
 });
 db.connect(function(err) {
     if (err) throw err;
@@ -23,7 +23,7 @@ const menuChoicer = () => {
         type: 'list',
         name: 'choice',
         message: 'Select one option: ',
-        choice: [
+        choices: [
             'view employees',
             'add employee',
             'view roles',
@@ -34,29 +34,29 @@ const menuChoicer = () => {
             'exit'
         ],}
     ])
-    .then(answers => {
-        if (answers.menu === 'view employees') {
+    .then(menu => {
+        if (menu.choice === 'view employees') {
             viewEmployees();
         };
-        if (answers.menu === 'add employee') {
+        if (menu.choice === 'add employee') {
             addEmployee();
         };
-        if (answers.menu === 'view roles') {
+        if (menu.choice === 'view roles') {
             viewRoles();
         };
-        if (answers.menu === 'add role') {
+        if (menu.choice === 'add role') {
             addRole();
         };
-        if (answers.menu === 'update employee role') {
+        if (menu.choice === 'update employee role') {
             updateEmployeeRole();
         };
-        if (answers.menu === 'view departments') {
+        if (menu.choice === 'view departments') {
             viewDepartments();
         };
-        if (answers.menu === 'add department') {
+        if (menu.choice === 'add department') {
             addDepartment();
         };
-        if (answers.menu === 'exit') {
+        if (menu.choice === 'exit') {
             viewTables();
         };
 
@@ -68,24 +68,65 @@ const menuChoicer = () => {
 
 const viewEmployees = () => {
     const sql =  
-    `   SELECT employee.id, first_name, last_name, title, dept_name, manager_id, salary
+    `   SELECT employee.id, first_name, last_name, title, department_name, manager_id, salary
         FROM employee
         INNER JOIN role
         ON role.id = employee.id
         INNER JOIN department
         ON department.id = employee.id;
     `; 
-    db.query(sql, (err, data) => {
+    db.query(sql, (err, res) => {
         if (err) throw err;
-        console.table(data);
         console.log('Now viewing employees');
+        console.table(res);
+        console.log('returning to menu choices...');
         menuChoicer();
     });
 };
 
 const addEmployee = () => {
-
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'first',
+            message: 'Whats first name of employee?'
+        },
+        {
+            type: 'input',
+            name: 'last',
+            message: 'Whats last name of employee?'
+        },
+        {
+            type: 'input',
+            name: 'role',
+            message: 'Whats role id (5 number) of employee?'
+        },
+        {
+            type: 'input',
+            name: 'manager',
+            message: 'Whats manager id (2 number) for employee?'
+        },
+    ])
+    .then(menu => {
+        const params = [menu.first, menu.last, menu.role, menu.manager];
+        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`;
+        db.query(sql, params , (err, res) => {
+            if (err) throw err;
+            console.log(`Added new employee: ${menu.first}`);
+            viewAddEmployee();
+        });
+        const viewAddEmployee = () => {
+            const sql = `SELECT * FROM employee`;
+            db.query(sql, (err, res) => {
+                console.log('Now viewing added employee');
+                console.table(res);
+                console.log('returning to menu choices...');
+                menuChoicer(); 
+            });
+        };
+    });
 };
+
 
 const viewRoles = () => {
 
