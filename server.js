@@ -107,9 +107,9 @@ const addEmployee = () => {
         db.query(sql, params , (err, res) => {
             if (err) throw err;
             console.log(`Added new employee: ${menu.first}`);
-            viewAddEmployee();
+            viewNewEmployee();
         });
-        const viewAddEmployee = () => {
+        const viewNewEmployee = () => {
             const sql = `SELECT * FROM employee`;
             db.query(sql, (err, res) => {
                 console.log('Now viewing added employee');
@@ -134,11 +134,87 @@ const viewRoles = () => {
 };
 
 const addRole = () => {
-    
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'role',
+            message: 'Name of new role?'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'Salary of new role?'
+        },
+        {
+            type: 'input',
+            name: 'department',
+            message: 'Department id of new role?'
+        },
+    ])
+    .then(menu => {
+        const params = [menu.role, menu.salary, menu.department];
+        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`;
+        db.query(sql, params , (err, res) => {
+            if (err) throw err;
+            console.log(`Added new role: ${menu.role}`);
+            viewNewRole();
+        });
+        const viewNewRole = () => {
+            const sql = `SELECT * FROM role`;
+            db.query(sql, (err, res) => {
+                console.log('Now viewing added role');
+                console.table(res);
+                console.log('returning to menu choices...');
+                menuChoicer(); 
+            });
+        };
+    });
 };
 
 const updateEmployeeRole = () => {
-
+    const sqlAllEmployees = `SELECT CONCAT (first_name, ' ', last_name) AS 'name', id FROM employee`;
+    db.query(sqlAllEmployees, (err, res) => {
+        console.log(res);
+        let allEmployees = [];
+        for (let i = 0; i < res.length; i++) {
+            const allEmployeeId = res[i].id;
+            allEmployees.push(allEmployeeId);
+        };
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'updateId',
+                message: 'Choose the id of the employee whose role is to be updated',
+                choices: allEmployees
+            },
+            {
+                type: 'input',
+                name: 'role',
+                message: 'What is role id of the new role?'
+            }
+        ])
+        .then(menu => {
+            let updatedEmployeeId = menu.updateId;
+            let updatedRoleName = menu.role;
+            const updateRoleQuery = `UPDATE employee SET ? WHERE ?`;
+            const updateValuesQuery = [{role_id: updatedRoleName}, {id: updatedEmployeeId}];
+        
+            db.query(updateRoleQuery, updateValuesQuery, (err, res) => {
+                if (err) throw err;
+                console.log('Employee role has been updated');
+                viewUpdatedRole();
+            });
+            const viewUpdatedRole = () => {
+                const sqlRole = `SELECT * FROM employee`;
+                db.query(sqlRole, (err, res) => {
+                    console.log('Viewing updated role table');
+                    console.table(res);
+                    console.log('returning to menu choices...');
+                    menuChoicer(); 
+                });
+            };
+        });
+    });
 };
 
 const viewDepartments = () => {
