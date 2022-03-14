@@ -16,7 +16,7 @@ The assignment is to build a command-line application from scratch to manage a c
 
 ### Screenshots
 ### Video
-Link to video on [GitHub](https://github.com/mikekeene/employee-tracker-app/assets)
+https://user-images.githubusercontent.com/93222787/158102556-e71c95ef-7e9e-4a1a-a36b-66977e71a6f9.mp4
 ## Licence
 MIT License
 ## Questions
