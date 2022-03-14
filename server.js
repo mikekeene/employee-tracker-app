@@ -153,7 +153,7 @@ const addRole = () => {
     ])
     .then(menu => {
         const params = [menu.role, menu.salary, menu.department];
-        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`;
+        const sql = `INSERT INTO role (title, salary, department_id) VALUES (?,?,?)`;
         db.query(sql, params , (err, res) => {
             if (err) throw err;
             console.log(`Added new role: ${menu.role}`);
