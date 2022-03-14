@@ -244,7 +244,7 @@ const addDepartment = () => {
             viewNewDepartment();
         });
         const viewNewDepartment = () => {
-            const sql = `SELECT * FROM employee`;
+            const sql = `SELECT * FROM department`;
             db.query(sql, (err, res) => {
                 console.log('Now viewing added department');
                 console.table(res);
